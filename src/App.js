@@ -59,7 +59,7 @@ class App extends React.Component {
     let weatherLink = `${process.env.REACT_APP_SERVER_LINK}/weather?city=${searchQ}`;
     let weatherResult = await axios.get(weatherLink);
 
-    console.log('hhhhhhhhhhhhhhhhhh work', weatherResult.data)
+    console.log(' ExploreWeather work', weatherResult.data)
 
     this.setState({
       weatherResult: weatherResult.data
@@ -72,7 +72,7 @@ class App extends React.Component {
     return (
       <div>
 
-        <Navbar bg="dark" variant="dark">
+        <Navbar bg="danger" variant="dark">
           <Container>
             <Navbar.Brand href="#home"> <h3>City Explorer app</h3></Navbar.Brand>
           </Container>
@@ -80,27 +80,27 @@ class App extends React.Component {
         {/* <button onClick ={this.ExploreFunction}>Explore!</button> */}
 
         {/* onSubmit={this.ExploreFunction} */}
-        <Form onSubmit={this.ExploreFunction} label="Enter city name here" >
-          {/* <Button type="submit" name="buttonname" > */}
+        <Form   onSubmit={this.ExploreFunction} label="Enter city name here"  >
+        
 
           {/* key={i} */}
           <Form.Control type="text" name='city' label="Enter city name here" />
-          <Form.Control variant="dark" type="submit" value='sercsh for city' />
-          {/* </Button> */}
+          <Form.Control   type="submit" value='sercsh for city' />
+        
         </Form>
 
-        {this.state.weatherResult.map((weather) => {
+        {this.state.weatherResult.map((weather,i) => {
           return (
-            <Weather  weather1={weather}
+            <Weather key ={i} weather1={weather}
             />
           )
         })}
 
         {this.state.showLocation &&
           <>
-            <p> City Name: {this.state.searchQ}</p>
-            <p>latitude:  {this.state.ExploreLocationResult.lat}</p>
-            <p>longitude:  {this.state.ExploreLocationResult.lon}</p>
+            <p style={{width: "10rem"}}> City Name: {this.state.searchQ}</p>
+            <p style={{width: "10rem"}} >latitude:  {this.state.ExploreLocationResult.lat}</p>
+            <p style={{width: "10rem"}}>longitude:  {this.state.ExploreLocationResult.lon}</p>
 
             {/* <img src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_KEY}&center=${this.state.ExploreLocationResult.lat},${this.state.ExploreLocationResult.lon}&zoom=10`} alt="city" /> */}
             <Col xs={6} md={4} >
