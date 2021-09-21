@@ -83,15 +83,15 @@ class App extends React.Component {
         <Form onSubmit={this.ExploreFunction} label="Enter city name here" >
           {/* <Button type="submit" name="buttonname" > */}
 
-
+          {/* key={i} */}
           <Form.Control type="text" name='city' label="Enter city name here" />
           <Form.Control variant="dark" type="submit" value='sercsh for city' />
           {/* </Button> */}
         </Form>
 
-        {this.state.weatherResult.map((weather, i) => {
+        {this.state.weatherResult.map((weather) => {
           return (
-            <Weather key={i} weather1={weather}
+            <Weather  weather1={weather}
             />
           )
         })}
