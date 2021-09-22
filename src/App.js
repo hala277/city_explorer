@@ -5,8 +5,10 @@ import Form from 'react-bootstrap/Form'
 import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
 import Weather from './componant/weather'
+import Movies from './componant/Movies'
 import Image from 'react-bootstrap/Image'
-import Col from 'react-bootstrap/Col'
+
+import Card from 'react-bootstrap/Card'
 
 // https://city-explorer-api077.herokuapp.com
 class App extends React.Component {
@@ -17,6 +19,7 @@ class App extends React.Component {
     this.state = {
       ExploreLocationResult: [],
       weatherResult: [],
+      moveResult:[],
       searchQ: '',
 
       showLocation: false
@@ -49,20 +52,42 @@ class App extends React.Component {
       showLocation: true
     })
     this.ExploreWeather(this.state.searchQ)
+    this.ExploreMovies(this.state.searchQ)
   }
 
 
 
   ExploreWeather = async (searchQ) => {
-    // cityWeather.preventDefault();
+    // searchQ.preventDefault();
     console.log('inside function weather')
-    let weatherLink = `${process.env.REACT_APP_SERVER_LINK}/weather?city=${searchQ}`;
-    let weatherResult = await axios.get(weatherLink);
 
+
+    let weatherLink = `${process.env.REACT_APP_SERVER_LINK}/getWeather?city=${searchQ}`;
+    // localhost:3001/getWeather?city=Amman
+    console.log(weatherLink);
+    let weatherResult = await axios.get(weatherLink);
+    console.log("hereeeeeeeeee", weatherResult);
     console.log(' ExploreWeather work', weatherResult.data)
 
     this.setState({
       weatherResult: weatherResult.data
+    })
+  }
+
+  ExploreMovies = async (searchQ) => {
+    // searchQ.preventDefault();
+    console.log('inside function weather')
+
+
+    let moviesLink = `${process.env.REACT_APP_SERVER_LINK}/getMovies?query=${searchQ}`;
+    // localhost:3001/getMovies?query=Amman
+    console.log(moviesLink);
+    let moveResult = await axios.get(moviesLink);
+    console.log("hereeeeeeeeee MOOOVEEE", moveResult);
+    console.log(' ExploreMoveis work', moveResult.data)
+
+    this.setState({
+      moveResult: moveResult.data
     })
   }
 
@@ -80,34 +105,47 @@ class App extends React.Component {
         {/* <button onClick ={this.ExploreFunction}>Explore!</button> */}
 
         {/* onSubmit={this.ExploreFunction} */}
-        <Form   onSubmit={this.ExploreFunction} label="Enter city name here"  >
-        
+        <Form onSubmit={this.ExploreFunction} label="Enter city name here"  >
+
 
           {/* key={i} */}
           <Form.Control type="text" name='city' label="Enter city name here" />
-          <Form.Control   type="submit" value='sercsh for city' />
-        
+          <Form.Control type="submit" value='sercsh for city' />
+
         </Form>
 
-        {this.state.weatherResult.map((weather,i) => {
+
+
+        {this.state.showLocation &&
+          <>
+            <Card style={{ "fontWeight": "bold", "width": "1260px" }}>
+              <Card.Body style={{ "textAlign": "center", "marginTop": "30px" }}  >
+                <h6 >City Name:  {this.state.searchQ}</h6>
+                <h6 >latitude:    {this.state.ExploreLocationResult.lat}</h6>
+                <h6 >longitude:   {this.state.ExploreLocationResult.lon}</h6>
+              </Card.Body>
+              {/* <img src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_KEY}&center=${this.state.ExploreLocationResult.lat},${this.state.ExploreLocationResult.lon}&zoom=10`} alt="city" /> */}
+              {/* <Col   > */}
+              <Image src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_KEY}&center=${this.state.ExploreLocationResult.lat},${this.state.ExploreLocationResult.lon}&zoom=10`} alt="city" thumbnail />
+              {/* </Col> */}
+
+            </Card>
+          </>
+        }
+
+        {this.state.weatherResult.map((weather, i) => {
           return (
-            <Weather key ={i} weather1={weather}
+            <Weather key={i} weather1={weather}
             />
           )
         })}
 
-        {this.state.showLocation &&
-          <>
-            <p style={{width: "10rem"}}> City Name: {this.state.searchQ}</p>
-            <p style={{width: "10rem"}} >latitude:  {this.state.ExploreLocationResult.lat}</p>
-            <p style={{width: "10rem"}}>longitude:  {this.state.ExploreLocationResult.lon}</p>
-
-            {/* <img src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_KEY}&center=${this.state.ExploreLocationResult.lat},${this.state.ExploreLocationResult.lon}&zoom=10`} alt="city" /> */}
-            <Col xs={6} md={4} >
-              <Image src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_KEY}&center=${this.state.ExploreLocationResult.lat},${this.state.ExploreLocationResult.lon}&zoom=10`} alt="city" thumbnail />
-            </Col>
-          </>
-        }
+        {this.state.moveResult.map((movies, i) => {
+          return (
+            <Movies key={i} movies1={movies}
+            />
+          )
+        })}
 
 
       </div>
